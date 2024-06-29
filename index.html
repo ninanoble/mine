@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greeting Widget</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: #f0f0f0;
+  }
+  .rectangle {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  .rectangle p {
+    margin: 5px 0;
+    font-size: 1.2em;
+  }
+</style>
+</head>
+<body>
+<div class="rectangle">
+  <p id="greeting-text">Good Morning!</p>
+  <p id="date-text"></p>
+  <p id="day-text"></p>
+  <p id="time-text"></p>
+</div>
+<script>
+  function updateWidget() {
+    const now = new Date();
+    const gmt2Offset = 2 * 60 * 60 * 1000; // GMT+2 offset in milliseconds
+    const rwandaTime = new Date(now.getTime() + gmt2Offset);
+    
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateStr = rwandaTime.toLocaleDateString('en-US', options);
+    const dayStr = rwandaTime.toLocaleDateString('en-US', { weekday: 'long' });
+    const timeStr = rwandaTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    let greeting;
+    const hours = rwandaTime.getUTCHours();
+    if (hours < 12) {
+      greeting = "Good Morning!";
+    } else if (hours < 18) {
+      greeting = "Good Afternoon!";
+    } else {
+      greeting = "Good Evening!";
+    }
+
+    document.getElementById('greeting-text').innerText = greeting;
+    document.getElementById('date-text').innerText = dateStr;
+    document.getElementById('day-text').innerText = dayStr;
+    document.getElementById('time-text').innerText = timeStr;
+  }
+
+  updateWidget();
+  setInterval(updateWidget, 1000); // Update every second
+</script>
+</body>
+</html>
